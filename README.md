@@ -19,3 +19,11 @@ Example:
 ### Mô hình cơ sở dữ liệu
 
 ![alt text](https://media.discordapp.net/attachments/684439044817551448/957678000063787099/BinanceERR.png?width=552&height=701)
+
+
+## sql_app
+- crud.py : to define method (read,write) to MySQL
+- database.py : for connecting MySQL
+- main.py: main file for build FastAPI service
+- models.py: define class object models for FastAPI
+- schemas.py: define schemas for working with the specific API request/response
