@@ -1,9 +1,13 @@
 import imp
 from statistics import mode
+from sqlalchemy import and_, or_, not_
 from sqlalchemy.orm import Session
+from datetime import datetime
+
+
 from . import models, schemas
-import json
-from .models import Action
+from .models import Action, UserBalance
+
 
 
 def get_user_by_name(db: Session, user_name: str):
@@ -29,13 +33,15 @@ def get_user_balance_by_name_and_token(db: Session, user_name: str):
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
+
 def create_balance(db: Session, username: str, tokenname: str, amount: float):
     db_userbalance = models.UserBalance(
-        username=username, tokenname=tokenname, amount = amount)
+        username=username, tokenname=tokenname, amount=amount)
     db.add(db_userbalance)
     db.commit()
     db.refresh(db_userbalance)
     return db_userbalance
+
 
 def create_user(db: Session, user: schemas.UserCreate):
     bio = ""
@@ -43,14 +49,16 @@ def create_user(db: Session, user: schemas.UserCreate):
         bio = user.userbio
     db_user = models.User(username=user.username,
                           password=user.password, userbio=bio)
-    create_balance(db, user.username, tokenname="Bitcoin", amount=13.08)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+    create_balance(db, user.username, tokenname="Bitcoin", amount=13.08)
     return db_user
 
+
 def find_token(db: Session, token: str):
-    data_token = db.query(models.Token).filter(models.Token.tokenname == token).first()
+    data_token = db.query(models.Token).filter(
+        models.Token.tokenname == token).first()
     return data_token
 
 
@@ -59,12 +67,15 @@ def sort_tokens(token1: str, token2: str):
         token1, token2 = token2, token1
     return token1, token2
 
+
 tokens = ["bitcoin", "ethereum", "tether", "bnb", "usd coin"]
+
 
 def check_market(db: Session, token1: str, token2: str):
     if token1 not in tokens and token2 not in tokens:
         return "NO"
     return "ok"
+
 
 def find_market(db: Session, token1: str, token2: str):
     token1, token2 = sort_tokens(token1, token2)
@@ -81,39 +92,49 @@ def order(db: Session, market_order: schemas.MarketOrder):
     db.refresh(db_order)
     return db_order
 
-def deal(db: Session, order_id_buy: int, order_id_sell: int):
-    order_buy = db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == order_id_buy).first()
-    order_sell = db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == order_id_sell).first()
-    market = db.query(models.Market).filter(models.Market.marketid == order_buy.marketid).first()
+
+def increase_user_token_balance(db: Session, username: str, token: str, delta: float):
+    balance: models.UserBalance = db.query(models.UserBalance).filter(and_(
+        models.UserBalance.username == username, models.UserBalance.tokenname == token)).first()
+    if balance is None:
+        balance = create_balance(db, username, token, delta)
+    else:
+        balance.amount = balance + delta
+        db.commit(balance)
+        db.refresh(balance)
+
+def create_order_history(db: Session, order: models.MarketOrder):
+    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    db_order = models.OrderHistory(marketorderid = order.marketorderid, amount = order.totalamount - order.remainamount, orderedat = now)
+    db.add(db_order)
+    db.commit(db_order)
+    db.refresh(db_order)
+    
+def deal(db: Session, order_buy: models.MarketOrder, order_sell: models.MarketOrder):
+    assert order_buy.marketid == order_sell.marketid
+    assert order_buy.price >= order_sell.price
+    market: models.Market = db.query(models.Market).filter(
+        models.Market.marketid == order_buy.marketid).first()
     token1 = market.token1
     token2 = market.token2
-    user_buy = db.query(models.UserBalance).filter(models.UserBalance.username == order_buy.username).all()
-    user_sell = db.query(models.UserBalance).filter(models.UserBalance.username == order_sell.username).all()
-    ok = 0
-    for balance in user_buy:
-        if balance.tokenname == token2:
-            ok = 1
+    increase_user_token_balance(db, order_buy.username, token1, -order_buy.price * order_buy.remainamount)
+    increase_user_token_balance(db, order_buy.username, token2, order_sell.price * order_sell.remainamount)
+    increase_user_token_balance(db, order_sell.username, token1, order_buy.price * order_buy.remainamount)
+    increase_user_token_balance(db, order_sell.username, token2, -order_sell.price * order_sell.remainamount)
+    create_order_history(db, order_buy)
+    create_order_history(db, order_sell)
     
-    
-
 def relax_market(db: Session, token1: str, token2: str):
     if check_market(db, token1, token2) == "OK":
         market_id = find_market(token1, token2)
-        list_sell = db.query(models.MarketOrder).filter(models.MarketOrder.orderaction == Action.SELL).all()
-        list_buy = db.query(models.MarketOrder).filter(models.MarketOrder.orderaction == Action.BUY).all()
+        list_sell = db.query(models.MarketOrder).filter(
+            models.MarketOrder.orderaction == Action.SELL).all()
+        list_buy = db.query(models.MarketOrder).filter(
+            models.MarketOrder.orderaction == Action.BUY).all()
         ok = 0
         for obuy in list_buy:
             for osell in list_sell:
                 if obuy.price > osell.price:
                     ok = 1
-                    
-                
-        
-def test(db: Session, token1: str, token2: str):
-    print("YESSSS")
-    token1, token2 = sort_tokens(token1, token2)
-    db_market = db.query(models.Market).filter(
-        models.Market.token1 == token1 and models.Market.token2 == token2).first()
-    if db_market is None:
-        print("NO")
-    return db_market.marketid
+    return 1
+
