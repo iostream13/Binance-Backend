@@ -12,9 +12,9 @@ class Action(str, enum.Enum):
 class User(Base):
     __tablename__ = "user"
     
-    username = Column(String, primary_key = True, index = True)
-    password = Column(String)
-    userbio = Column(String)
+    username = Column(String(50), primary_key = True, index = True)
+    password = Column(String(100))
+    userbio = Column(String(500))
     
     balanceuser = relationship("UserBalance", back_populates = "user")
     userorders = relationship("MarketOrder", back_populates = "user")
@@ -22,9 +22,9 @@ class User(Base):
 class Token(Base):
     __tablename__ = "token"
     
-    tokenname = Column(String, primary_key = True, index = True)
-    tokensymbol = Column(String)
-    tokenimage = Column(String)
+    tokenname = Column(String(50), primary_key = True, index = True)
+    tokensymbol = Column(String(10))
+    tokenimage = Column(String(1000))
     marketcap = Column(Float)
     totalsupply = Column(Float)
     maxsupply = Column(Float)
@@ -37,7 +37,7 @@ class TokenHistory(Base):
     __tablename__ = "tokenhistory"
     
     tokenhistoryid = Column(Integer, primary_key = True, index = True)
-    tokenname = Column(String, ForeignKey("token.tokenname"))
+    tokenname = Column(String(50), ForeignKey("token.tokenname"))
     volume = Column(Float)
     
     token = relationship("Token", back_populates = "listtokenhistory")
@@ -45,8 +45,8 @@ class TokenHistory(Base):
 class UserBalance(Base):
     __tablename__ = "userbalance"
     
-    username = Column(String, ForeignKey("user.username"), primary_key = True)
-    tokenname = Column(String, ForeignKey("token.tokenname"), primary_key = True)
+    username = Column(String(50), ForeignKey("user.username"), primary_key = True)
+    tokenname = Column(String(50), ForeignKey("token.tokenname"), primary_key = True)
     amount = Column(Float)
     
     user = relationship("User", back_populates = "balanceuser")
@@ -56,8 +56,8 @@ class Market(Base):
     __tablename__ = "market"
     
     marketid = Column(Integer, primary_key = True, index = True)
-    token1 = Column(String)
-    token2 = Column(String)
+    token1 = Column(String(50))
+    token2 = Column(String(50))
     
     listmarkethistory = relationship("MarketHistory", back_populates = "market")
     marketorders = relationship("MarketOrder", back_populates = "market")
@@ -75,7 +75,7 @@ class MarketOrder(Base):
     __tablename__ = "marketorder"
     
     marketorderid = Column(Integer, primary_key = True, index = True)
-    username = Column(String, ForeignKey("user.username"))
+    username = Column(String(50), ForeignKey("user.username"))
     marketid = Column(Integer, ForeignKey("market.marketid"))
     orderaction = Column(Enum(Action))
     totalamount = Column(Float)
