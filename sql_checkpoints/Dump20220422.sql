@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `binance` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `binance` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `binance`;
 -- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
@@ -23,14 +23,14 @@ USE `binance`;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `UserName` varchar(50) NOT NULL,
   `PassWord` varchar(100) NOT NULL,
   `UserBio` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`UserName`),
   UNIQUE KEY `UserName` (`UserName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +49,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `market`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `market` (
   `MarketID` int NOT NULL AUTO_INCREMENT,
   `Token1` varchar(50) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE `market` (
   UNIQUE KEY `MarketID` (`MarketID`),
   UNIQUE KEY `Token1` (`Token1`,`Token2`),
   CONSTRAINT `TokenOrder` CHECK ((`Token1` < `Token2`))
-) ENGINE=InnoDB AUTO_INCREMENT=486 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=486 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +77,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `markethistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `markethistory` (
   `MarketHistoryID` int NOT NULL AUTO_INCREMENT,
   `MarketID` int NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE `markethistory` (
   KEY `fk_MarketHistory_Market` (`MarketID`),
   CONSTRAINT `fk_MarketHistory_Market` FOREIGN KEY (`MarketID`) REFERENCES `market` (`MarketID`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `MarketVolumePositive` CHECK ((`Volume` > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +104,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `marketorder`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `marketorder` (
   `MarketOrderID` int NOT NULL AUTO_INCREMENT,
   `UserName` varchar(50) NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE `marketorder` (
   CONSTRAINT `PricePositive` CHECK ((`Price` > 0)),
   CONSTRAINT `RemainAmountPositive` CHECK ((`RemainAmount` >= 0)),
   CONSTRAINT `TotalAmountConstraint` CHECK ((`TotalAmount` >= `RemainAmount`))
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,7 +141,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `orderhistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `orderhistory` (
   `OrderHistoryID` int NOT NULL AUTO_INCREMENT,
   `MarketOrderID` int NOT NULL,
@@ -151,7 +151,7 @@ CREATE TABLE `orderhistory` (
   KEY `fk_OrderHistory_MarketOrder` (`MarketOrderID`),
   CONSTRAINT `fk_OrderHistory_MarketOrder` FOREIGN KEY (`MarketOrderID`) REFERENCES `marketorder` (`MarketOrderID`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `AmountOrderHistory` CHECK ((`Amount` > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +169,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `token` (
   `TokenName` varchar(50) NOT NULL,
   `TokenSymbol` varchar(10) NOT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE `token` (
   PRIMARY KEY (`TokenName`),
   UNIQUE KEY `TokenName` (`TokenName`),
   UNIQUE KEY `TokenSymbol` (`TokenSymbol`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +200,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tokenhistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `tokenhistory` (
   `TokenHistoryID` int NOT NULL AUTO_INCREMENT,
   `TokenName` varchar(50) NOT NULL,
@@ -209,7 +209,7 @@ CREATE TABLE `tokenhistory` (
   KEY `fk_TokenHistory_Token` (`TokenName`),
   CONSTRAINT `fk_TokenHistory_Token` FOREIGN KEY (`TokenName`) REFERENCES `token` (`TokenName`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `TokenVolumePositive` CHECK ((`Volume` > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +227,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `userbalance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8 */;
 CREATE TABLE `userbalance` (
   `UserName` varchar(50) NOT NULL,
   `TokenName` varchar(50) NOT NULL,
@@ -237,7 +237,7 @@ CREATE TABLE `userbalance` (
   CONSTRAINT `fk_UserBalance_Token` FOREIGN KEY (`TokenName`) REFERENCES `token` (`TokenName`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_UserBalance_User` FOREIGN KEY (`UserName`) REFERENCES `user` (`UserName`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `UserBalanceAmountPositive` CHECK ((`Amount` >= 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
