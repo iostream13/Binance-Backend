@@ -18,7 +18,7 @@ Example:
 
 ### Mô hình cơ sở dữ liệu
 
-![alt text](https://media.discordapp.net/attachments/684439044817551448/957678000063787099/BinanceERR.png?width=552&height=701)
+![alt text](https://media.discordapp.net/attachments/684439044817551448/966986171899052042/BinanceERR.png?width=504&height=700)
 
 
 ## sql_app
@@ -27,3 +27,6 @@ Example:
 - main.py: main file for build FastAPI service
 - models.py: define class object models for FastAPI
 - schemas.py: define schemas for working with the specific API request/response
+
+## repo Front-end
+- https://github.com/lvhuy2002/binance-frontend
