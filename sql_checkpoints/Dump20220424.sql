@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS `binance`;
-CREATE DATABASE  IF NOT EXISTS `binance` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE  IF NOT EXISTS `binance` /*!40100 DEFAULT CHARACTER SET utf8mb3 COLLATE utf8_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `binance`;
 -- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
@@ -24,7 +24,7 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `market`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb3 */;
 CREATE TABLE `market` (
   `MarketID` int NOT NULL AUTO_INCREMENT,
   `Token1` varchar(50) NOT NULL,
@@ -52,7 +52,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `markethistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb3 */;
 CREATE TABLE `markethistory` (
   `MarketHistoryID` int NOT NULL AUTO_INCREMENT,
   `MarketID` int NOT NULL,
@@ -79,7 +79,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `marketorder`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb3 */;
 CREATE TABLE `marketorder` (
   `MarketOrderID` int NOT NULL AUTO_INCREMENT,
   `UserName` varchar(50) NOT NULL,
@@ -116,7 +116,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `orderhistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb3 */;
 CREATE TABLE `orderhistory` (
   `OrderHistoryID` int NOT NULL AUTO_INCREMENT,
   `MarketOrderID` int NOT NULL,
@@ -145,7 +145,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb3 */;
 CREATE TABLE `token` (
   `TokenName` varchar(50) NOT NULL,
   `TokenSymbol` varchar(10) NOT NULL,
@@ -176,7 +176,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tokenhistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb3 */;
 CREATE TABLE `tokenhistory` (
   `TokenHistoryID` int NOT NULL AUTO_INCREMENT,
   `TokenName` varchar(50) NOT NULL,
@@ -203,7 +203,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb3 */;
 CREATE TABLE `user` (
   `UserName` varchar(50) NOT NULL,
   `PassWord` varchar(100) NOT NULL,
@@ -229,7 +229,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `userbalance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb3 */;
 CREATE TABLE `userbalance` (
   `UserName` varchar(50) NOT NULL,
   `TokenName` varchar(50) NOT NULL,
