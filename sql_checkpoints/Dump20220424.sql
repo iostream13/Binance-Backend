@@ -1,4 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `binance` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+DROP DATABASE IF EXISTS `binance`;
+CREATE DATABASE  IF NOT EXISTS `binance` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `binance`;
 -- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
@@ -13,35 +14,9 @@ USE `binance`;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
-  `UserName` varchar(50) NOT NULL,
-  `PassWord` varchar(100) NOT NULL,
-  `UserBio` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`UserName`),
-  UNIQUE KEY `UserName` (`UserName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('dung','1308','hjhjhhj'),('hien','1308','hjhj'),('huy','1308','hjhjhhj');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `market`
@@ -49,7 +24,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `market`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `market` (
   `MarketID` int NOT NULL AUTO_INCREMENT,
   `Token1` varchar(50) NOT NULL,
@@ -58,7 +33,7 @@ CREATE TABLE `market` (
   UNIQUE KEY `MarketID` (`MarketID`),
   UNIQUE KEY `Token1` (`Token1`,`Token2`),
   CONSTRAINT `TokenOrder` CHECK ((`Token1` < `Token2`))
-) ENGINE=InnoDB AUTO_INCREMENT=486 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=486 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +42,7 @@ CREATE TABLE `market` (
 
 LOCK TABLES `market` WRITE;
 /*!40000 ALTER TABLE `market` DISABLE KEYS */;
-INSERT INTO `market` VALUES (60,'Aave','Bitcoin'),(351,'Aave','BNB'),(158,'Aave','Ethereum'),(255,'Aave','Tether'),(446,'Aave','USD Coin'),(27,'Algorand','Bitcoin'),(318,'Algorand','BNB'),(125,'Algorand','Ethereum'),(222,'Algorand','Tether'),(413,'Algorand','USD Coin'),(90,'Amp','Bitcoin'),(381,'Amp','BNB'),(188,'Amp','Ethereum'),(285,'Amp','Tether'),(476,'Amp','USD Coin'),(54,'ApeCoin','Bitcoin'),(345,'ApeCoin','BNB'),(152,'ApeCoin','Ethereum'),(249,'ApeCoin','Tether'),(440,'ApeCoin','USD Coin'),(70,'Arweave','Bitcoin'),(361,'Arweave','BNB'),(168,'Arweave','Ethereum'),(265,'Arweave','Tether'),(456,'Arweave','USD Coin'),(10,'Avalanche','Bitcoin'),(301,'Avalanche','BNB'),(108,'Avalanche','Ethereum'),(205,'Avalanche','Tether'),(396,'Avalanche','USD Coin'),(32,'Axie Infinity','Bitcoin'),(323,'Axie Infinity','BNB'),(130,'Axie Infinity','Ethereum'),(227,'Axie Infinity','Tether'),(418,'Axie Infinity','USD Coin'),(87,'Basic Attention Token','Bitcoin'),(378,'Basic Attention Token','BNB'),(185,'Basic Attention Token','Ethereum'),(282,'Basic Attention Token','Tether'),(473,'Basic Attention Token','USD Coin'),(12,'Binance USD','Bitcoin'),(303,'Binance USD','BNB'),(110,'Binance USD','Ethereum'),(207,'Binance USD','Tether'),(398,'Binance USD','USD Coin'),(24,'Bitcoin','Bitcoin Cash'),(73,'Bitcoin','Bitcoin SV'),(98,'Bitcoin','BitDAO'),(66,'Bitcoin','BitTorrent'),(3,'Bitcoin','BNB'),(6,'Bitcoin','Cardano'),(62,'Bitcoin','cDAI'),(85,'Bitcoin','Celo'),(84,'Bitcoin','Celsius Network'),(44,'Bitcoin','cETH'),(23,'Bitcoin','Chainlink'),(83,'Bitcoin','Chiliz'),(75,'Bitcoin','Convex Finance'),(21,'Bitcoin','Cosmos Hub'),(16,'Bitcoin','Cronos'),(61,'Bitcoin','cUSDC'),(19,'Bitcoin','Dai'),(82,'Bitcoin','Dash'),(39,'Bitcoin','Decentraland'),(11,'Bitcoin','Dogecoin'),(72,'Bitcoin','eCash'),(37,'Bitcoin','Elrond'),(74,'Bitcoin','Enjin Coin'),(50,'Bitcoin','EOS'),(1,'Bitcoin','Ethereum'),(28,'Bitcoin','Ethereum Classic'),(43,'Bitcoin','Fantom'),(38,'Bitcoin','Filecoin'),(56,'Bitcoin','Flow'),(53,'Bitcoin','Frax'),(93,'Bitcoin','Frax Share'),(25,'Bitcoin','FTX Token'),(64,'Bitcoin','Gala'),(65,'Bitcoin','Harmony'),(35,'Bitcoin','Hedera'),(57,'Bitcoin','Helium'),(96,'Bitcoin','Holo'),(91,'Bitcoin','Humans.ai'),(71,'Bitcoin','Huobi BTC'),(86,'Bitcoin','Huobi Token'),(36,'Bitcoin','Internet Computer'),(58,'Bitcoin','IOTA'),(92,'Bitcoin','JUNO'),(95,'Bitcoin','Kadena'),(46,'Bitcoin','Klaytn'),(80,'Bitcoin','KuCoin Token'),(78,'Bitcoin','Kusama'),(31,'Bitcoin','LEO Token'),(18,'Bitcoin','Lido Staked Ether'),(20,'Bitcoin','Litecoin'),(81,'Bitcoin','Loopring'),(52,'Bitcoin','Magic Internet Money'),(67,'Bitcoin','Maker'),(97,'Bitcoin','Mina Protocol'),(41,'Bitcoin','Monero'),(22,'Bitcoin','Near'),(99,'Bitcoin','NEM'),(69,'Bitcoin','NEO'),(89,'Bitcoin','NEXO'),(29,'Bitcoin','OKB'),(51,'Bitcoin','Osmosis'),(59,'Bitcoin','PancakeSwap'),(9,'Bitcoin','Polkadot'),(17,'Bitcoin','Polygon'),(63,'Bitcoin','Quant'),(77,'Bitcoin','Radix'),(14,'Bitcoin','Shiba Inu'),(7,'Bitcoin','Solana'),(79,'Bitcoin','Stacks'),(30,'Bitcoin','Stellar'),(94,'Bitcoin','Synthetix Network Token'),(8,'Bitcoin','Terra'),(13,'Bitcoin','TerraUSD'),(2,'Bitcoin','Tether'),(45,'Bitcoin','Tezos'),(49,'Bitcoin','The Graph'),(40,'Bitcoin','The Sandbox'),(68,'Bitcoin','Theta Fuel'),(42,'Bitcoin','Theta Network'),(48,'Bitcoin','THORChain'),(26,'Bitcoin','TRON'),(88,'Bitcoin','TrueUSD'),(34,'Bitcoin','Uniswap'),(4,'Bitcoin','USD Coin'),(33,'Bitcoin','VeChain'),(47,'Bitcoin','Waves'),(15,'Bitcoin','Wrapped Bitcoin'),(5,'Bitcoin','XRP'),(55,'Bitcoin','Zcash'),(76,'Bitcoin','Zilliqa'),(315,'Bitcoin Cash','BNB'),(122,'Bitcoin Cash','Ethereum'),(219,'Bitcoin Cash','Tether'),(410,'Bitcoin Cash','USD Coin'),(364,'Bitcoin SV','BNB'),(171,'Bitcoin SV','Ethereum'),(268,'Bitcoin SV','Tether'),(459,'Bitcoin SV','USD Coin'),(389,'BitDAO','BNB'),(196,'BitDAO','Ethereum'),(293,'BitDAO','Tether'),(484,'BitDAO','USD Coin'),(357,'BitTorrent','BNB'),(164,'BitTorrent','Ethereum'),(261,'BitTorrent','Tether'),(452,'BitTorrent','USD Coin'),(297,'BNB','Cardano'),(353,'BNB','cDAI'),(376,'BNB','Celo'),(375,'BNB','Celsius Network'),(335,'BNB','cETH'),(314,'BNB','Chainlink'),(374,'BNB','Chiliz'),(366,'BNB','Convex Finance'),(312,'BNB','Cosmos Hub'),(307,'BNB','Cronos'),(352,'BNB','cUSDC'),(310,'BNB','Dai'),(373,'BNB','Dash'),(330,'BNB','Decentraland'),(302,'BNB','Dogecoin'),(363,'BNB','eCash'),(328,'BNB','Elrond'),(365,'BNB','Enjin Coin'),(341,'BNB','EOS'),(101,'BNB','Ethereum'),(319,'BNB','Ethereum Classic'),(334,'BNB','Fantom'),(329,'BNB','Filecoin'),(347,'BNB','Flow'),(344,'BNB','Frax'),(384,'BNB','Frax Share'),(316,'BNB','FTX Token'),(355,'BNB','Gala'),(356,'BNB','Harmony'),(326,'BNB','Hedera'),(348,'BNB','Helium'),(387,'BNB','Holo'),(382,'BNB','Humans.ai'),(362,'BNB','Huobi BTC'),(377,'BNB','Huobi Token'),(327,'BNB','Internet Computer'),(349,'BNB','IOTA'),(383,'BNB','JUNO'),(386,'BNB','Kadena'),(337,'BNB','Klaytn'),(371,'BNB','KuCoin Token'),(369,'BNB','Kusama'),(322,'BNB','LEO Token'),(309,'BNB','Lido Staked Ether'),(311,'BNB','Litecoin'),(372,'BNB','Loopring'),(343,'BNB','Magic Internet Money'),(358,'BNB','Maker'),(388,'BNB','Mina Protocol'),(332,'BNB','Monero'),(313,'BNB','Near'),(390,'BNB','NEM'),(360,'BNB','NEO'),(380,'BNB','NEXO'),(320,'BNB','OKB'),(342,'BNB','Osmosis'),(350,'BNB','PancakeSwap'),(300,'BNB','Polkadot'),(308,'BNB','Polygon'),(354,'BNB','Quant'),(368,'BNB','Radix'),(305,'BNB','Shiba Inu'),(298,'BNB','Solana'),(370,'BNB','Stacks'),(321,'BNB','Stellar'),(385,'BNB','Synthetix Network Token'),(299,'BNB','Terra'),(304,'BNB','TerraUSD'),(198,'BNB','Tether'),(336,'BNB','Tezos'),(340,'BNB','The Graph'),(331,'BNB','The Sandbox'),(359,'BNB','Theta Fuel'),(333,'BNB','Theta Network'),(339,'BNB','THORChain'),(317,'BNB','TRON'),(379,'BNB','TrueUSD'),(325,'BNB','Uniswap'),(295,'BNB','USD Coin'),(324,'BNB','VeChain'),(338,'BNB','Waves'),(306,'BNB','Wrapped Bitcoin'),(296,'BNB','XRP'),(346,'BNB','Zcash'),(367,'BNB','Zilliqa'),(104,'Cardano','Ethereum'),(201,'Cardano','Tether'),(392,'Cardano','USD Coin'),(160,'cDAI','Ethereum'),(257,'cDAI','Tether'),(448,'cDAI','USD Coin'),(183,'Celo','Ethereum'),(280,'Celo','Tether'),(471,'Celo','USD Coin'),(182,'Celsius Network','Ethereum'),(279,'Celsius Network','Tether'),(470,'Celsius Network','USD Coin'),(142,'cETH','Ethereum'),(239,'cETH','Tether'),(430,'cETH','USD Coin'),(121,'Chainlink','Ethereum'),(218,'Chainlink','Tether'),(409,'Chainlink','USD Coin'),(181,'Chiliz','Ethereum'),(278,'Chiliz','Tether'),(469,'Chiliz','USD Coin'),(173,'Convex Finance','Ethereum'),(270,'Convex Finance','Tether'),(461,'Convex Finance','USD Coin'),(119,'Cosmos Hub','Ethereum'),(216,'Cosmos Hub','Tether'),(407,'Cosmos Hub','USD Coin'),(114,'Cronos','Ethereum'),(211,'Cronos','Tether'),(402,'Cronos','USD Coin'),(159,'cUSDC','Ethereum'),(256,'cUSDC','Tether'),(447,'cUSDC','USD Coin'),(117,'Dai','Ethereum'),(214,'Dai','Tether'),(405,'Dai','USD Coin'),(180,'Dash','Ethereum'),(277,'Dash','Tether'),(468,'Dash','USD Coin'),(137,'Decentraland','Ethereum'),(234,'Decentraland','Tether'),(425,'Decentraland','USD Coin'),(109,'Dogecoin','Ethereum'),(206,'Dogecoin','Tether'),(397,'Dogecoin','USD Coin'),(170,'eCash','Ethereum'),(267,'eCash','Tether'),(458,'eCash','USD Coin'),(135,'Elrond','Ethereum'),(232,'Elrond','Tether'),(423,'Elrond','USD Coin'),(172,'Enjin Coin','Ethereum'),(269,'Enjin Coin','Tether'),(460,'Enjin Coin','USD Coin'),(148,'EOS','Ethereum'),(245,'EOS','Tether'),(436,'EOS','USD Coin'),(126,'Ethereum','Ethereum Classic'),(141,'Ethereum','Fantom'),(136,'Ethereum','Filecoin'),(154,'Ethereum','Flow'),(151,'Ethereum','Frax'),(191,'Ethereum','Frax Share'),(123,'Ethereum','FTX Token'),(162,'Ethereum','Gala'),(163,'Ethereum','Harmony'),(133,'Ethereum','Hedera'),(155,'Ethereum','Helium'),(194,'Ethereum','Holo'),(189,'Ethereum','Humans.ai'),(169,'Ethereum','Huobi BTC'),(184,'Ethereum','Huobi Token'),(134,'Ethereum','Internet Computer'),(156,'Ethereum','IOTA'),(190,'Ethereum','JUNO'),(193,'Ethereum','Kadena'),(144,'Ethereum','Klaytn'),(178,'Ethereum','KuCoin Token'),(176,'Ethereum','Kusama'),(129,'Ethereum','LEO Token'),(116,'Ethereum','Lido Staked Ether'),(118,'Ethereum','Litecoin'),(179,'Ethereum','Loopring'),(150,'Ethereum','Magic Internet Money'),(165,'Ethereum','Maker'),(195,'Ethereum','Mina Protocol'),(139,'Ethereum','Monero'),(120,'Ethereum','Near'),(197,'Ethereum','NEM'),(167,'Ethereum','NEO'),(187,'Ethereum','NEXO'),(127,'Ethereum','OKB'),(149,'Ethereum','Osmosis'),(157,'Ethereum','PancakeSwap'),(107,'Ethereum','Polkadot'),(115,'Ethereum','Polygon'),(161,'Ethereum','Quant'),(175,'Ethereum','Radix'),(112,'Ethereum','Shiba Inu'),(105,'Ethereum','Solana'),(177,'Ethereum','Stacks'),(128,'Ethereum','Stellar'),(192,'Ethereum','Synthetix Network Token'),(106,'Ethereum','Terra'),(111,'Ethereum','TerraUSD'),(100,'Ethereum','Tether'),(143,'Ethereum','Tezos'),(147,'Ethereum','The Graph'),(138,'Ethereum','The Sandbox'),(166,'Ethereum','Theta Fuel'),(140,'Ethereum','Theta Network'),(146,'Ethereum','THORChain'),(124,'Ethereum','TRON'),(186,'Ethereum','TrueUSD'),(132,'Ethereum','Uniswap'),(102,'Ethereum','USD Coin'),(131,'Ethereum','VeChain'),(145,'Ethereum','Waves'),(113,'Ethereum','Wrapped Bitcoin'),(103,'Ethereum','XRP'),(153,'Ethereum','Zcash'),(174,'Ethereum','Zilliqa'),(223,'Ethereum Classic','Tether'),(414,'Ethereum Classic','USD Coin'),(238,'Fantom','Tether'),(429,'Fantom','USD Coin'),(233,'Filecoin','Tether'),(424,'Filecoin','USD Coin'),(251,'Flow','Tether'),(442,'Flow','USD Coin'),(248,'Frax','Tether'),(439,'Frax','USD Coin'),(288,'Frax Share','Tether'),(479,'Frax Share','USD Coin'),(220,'FTX Token','Tether'),(411,'FTX Token','USD Coin'),(259,'Gala','Tether'),(450,'Gala','USD Coin'),(260,'Harmony','Tether'),(451,'Harmony','USD Coin'),(230,'Hedera','Tether'),(421,'Hedera','USD Coin'),(252,'Helium','Tether'),(443,'Helium','USD Coin'),(291,'Holo','Tether'),(482,'Holo','USD Coin'),(286,'Humans.ai','Tether'),(477,'Humans.ai','USD Coin'),(266,'Huobi BTC','Tether'),(457,'Huobi BTC','USD Coin'),(281,'Huobi Token','Tether'),(472,'Huobi Token','USD Coin'),(231,'Internet Computer','Tether'),(422,'Internet Computer','USD Coin'),(253,'IOTA','Tether'),(444,'IOTA','USD Coin'),(287,'JUNO','Tether'),(478,'JUNO','USD Coin'),(290,'Kadena','Tether'),(481,'Kadena','USD Coin'),(241,'Klaytn','Tether'),(432,'Klaytn','USD Coin'),(275,'KuCoin Token','Tether'),(466,'KuCoin Token','USD Coin'),(273,'Kusama','Tether'),(464,'Kusama','USD Coin'),(226,'LEO Token','Tether'),(417,'LEO Token','USD Coin'),(213,'Lido Staked Ether','Tether'),(404,'Lido Staked Ether','USD Coin'),(215,'Litecoin','Tether'),(406,'Litecoin','USD Coin'),(276,'Loopring','Tether'),(467,'Loopring','USD Coin'),(247,'Magic Internet Money','Tether'),(438,'Magic Internet Money','USD Coin'),(262,'Maker','Tether'),(453,'Maker','USD Coin'),(292,'Mina Protocol','Tether'),(483,'Mina Protocol','USD Coin'),(236,'Monero','Tether'),(427,'Monero','USD Coin'),(217,'Near','Tether'),(408,'Near','USD Coin'),(294,'NEM','Tether'),(485,'NEM','USD Coin'),(264,'NEO','Tether'),(455,'NEO','USD Coin'),(284,'NEXO','Tether'),(475,'NEXO','USD Coin'),(224,'OKB','Tether'),(415,'OKB','USD Coin'),(246,'Osmosis','Tether'),(437,'Osmosis','USD Coin'),(254,'PancakeSwap','Tether'),(445,'PancakeSwap','USD Coin'),(204,'Polkadot','Tether'),(395,'Polkadot','USD Coin'),(212,'Polygon','Tether'),(403,'Polygon','USD Coin'),(258,'Quant','Tether'),(449,'Quant','USD Coin'),(272,'Radix','Tether'),(463,'Radix','USD Coin'),(209,'Shiba Inu','Tether'),(400,'Shiba Inu','USD Coin'),(202,'Solana','Tether'),(393,'Solana','USD Coin'),(274,'Stacks','Tether'),(465,'Stacks','USD Coin'),(225,'Stellar','Tether'),(416,'Stellar','USD Coin'),(289,'Synthetix Network Token','Tether'),(480,'Synthetix Network Token','USD Coin'),(203,'Terra','Tether'),(394,'Terra','USD Coin'),(208,'TerraUSD','Tether'),(399,'TerraUSD','USD Coin'),(240,'Tether','Tezos'),(244,'Tether','The Graph'),(235,'Tether','The Sandbox'),(263,'Tether','Theta Fuel'),(237,'Tether','Theta Network'),(243,'Tether','THORChain'),(221,'Tether','TRON'),(283,'Tether','TrueUSD'),(229,'Tether','Uniswap'),(199,'Tether','USD Coin'),(228,'Tether','VeChain'),(242,'Tether','Waves'),(210,'Tether','Wrapped Bitcoin'),(200,'Tether','XRP'),(250,'Tether','Zcash'),(271,'Tether','Zilliqa'),(431,'Tezos','USD Coin'),(435,'The Graph','USD Coin'),(426,'The Sandbox','USD Coin'),(454,'Theta Fuel','USD Coin'),(428,'Theta Network','USD Coin'),(434,'THORChain','USD Coin'),(412,'TRON','USD Coin'),(474,'TrueUSD','USD Coin'),(420,'Uniswap','USD Coin'),(419,'USD Coin','VeChain'),(433,'USD Coin','Waves'),(401,'USD Coin','Wrapped Bitcoin'),(391,'USD Coin','XRP'),(441,'USD Coin','Zcash'),(462,'USD Coin','Zilliqa');
+INSERT INTO `market` VALUES (255,'Aave','Tether'),(446,'Aave','USD Coin'),(27,'Algorand','Bitcoin'),(318,'Algorand','BNB'),(125,'Algorand','Ethereum'),(222,'Algorand','Tether'),(413,'Algorand','USD Coin'),(90,'Amp','Bitcoin'),(381,'Amp','BNB'),(188,'Amp','Ethereum'),(285,'Amp','Tether'),(476,'Amp','USD Coin'),(54,'ApeCoin','Bitcoin'),(345,'ApeCoin','BNB'),(152,'ApeCoin','Ethereum'),(249,'ApeCoin','Tether'),(440,'ApeCoin','USD Coin'),(70,'Arweave','Bitcoin'),(361,'Arweave','BNB'),(168,'Arweave','Ethereum'),(265,'Arweave','Tether'),(456,'Arweave','USD Coin'),(10,'Avalanche','Bitcoin'),(301,'Avalanche','BNB'),(108,'Avalanche','Ethereum'),(205,'Avalanche','Tether'),(396,'Avalanche','USD Coin'),(32,'Axie Infinity','Bitcoin'),(323,'Axie Infinity','BNB'),(130,'Axie Infinity','Ethereum'),(227,'Axie Infinity','Tether'),(418,'Axie Infinity','USD Coin'),(87,'Basic Attention Token','Bitcoin'),(378,'Basic Attention Token','BNB'),(185,'Basic Attention Token','Ethereum'),(282,'Basic Attention Token','Tether'),(473,'Basic Attention Token','USD Coin'),(12,'Binance USD','Bitcoin'),(303,'Binance USD','BNB'),(110,'Binance USD','Ethereum'),(207,'Binance USD','Tether'),(398,'Binance USD','USD Coin'),(24,'Bitcoin','Bitcoin Cash'),(73,'Bitcoin','Bitcoin SV'),(98,'Bitcoin','BitDAO'),(66,'Bitcoin','BitTorrent'),(3,'Bitcoin','BNB'),(6,'Bitcoin','Cardano'),(62,'Bitcoin','cDAI'),(85,'Bitcoin','Celo'),(84,'Bitcoin','Celsius Network'),(44,'Bitcoin','cETH'),(23,'Bitcoin','Chainlink'),(83,'Bitcoin','Chiliz'),(75,'Bitcoin','Convex Finance'),(21,'Bitcoin','Cosmos Hub'),(16,'Bitcoin','Cronos'),(61,'Bitcoin','cUSDC'),(19,'Bitcoin','Dai'),(82,'Bitcoin','Dash'),(39,'Bitcoin','Decentraland'),(11,'Bitcoin','Dogecoin'),(72,'Bitcoin','eCash'),(37,'Bitcoin','Elrond'),(74,'Bitcoin','Enjin Coin'),(50,'Bitcoin','EOS'),(1,'Bitcoin','Ethereum'),(28,'Bitcoin','Ethereum Classic'),(43,'Bitcoin','Fantom'),(38,'Bitcoin','Filecoin'),(56,'Bitcoin','Flow'),(53,'Bitcoin','Frax'),(93,'Bitcoin','Frax Share'),(25,'Bitcoin','FTX Token'),(64,'Bitcoin','Gala'),(65,'Bitcoin','Harmony'),(35,'Bitcoin','Hedera'),(57,'Bitcoin','Helium'),(96,'Bitcoin','Holo'),(91,'Bitcoin','Humans.ai'),(71,'Bitcoin','Huobi BTC'),(86,'Bitcoin','Huobi Token'),(36,'Bitcoin','Internet Computer'),(58,'Bitcoin','IOTA'),(92,'Bitcoin','JUNO'),(95,'Bitcoin','Kadena'),(46,'Bitcoin','Klaytn'),(80,'Bitcoin','KuCoin Token'),(78,'Bitcoin','Kusama'),(31,'Bitcoin','LEO Token'),(18,'Bitcoin','Lido Staked Ether'),(20,'Bitcoin','Litecoin'),(81,'Bitcoin','Loopring'),(52,'Bitcoin','Magic Internet Money'),(67,'Bitcoin','Maker'),(97,'Bitcoin','Mina Protocol'),(41,'Bitcoin','Monero'),(22,'Bitcoin','Near'),(99,'Bitcoin','NEM'),(69,'Bitcoin','NEO'),(89,'Bitcoin','NEXO'),(29,'Bitcoin','OKB'),(51,'Bitcoin','Osmosis'),(59,'Bitcoin','PancakeSwap'),(9,'Bitcoin','Polkadot'),(17,'Bitcoin','Polygon'),(63,'Bitcoin','Quant'),(77,'Bitcoin','Radix'),(14,'Bitcoin','Shiba Inu'),(7,'Bitcoin','Solana'),(79,'Bitcoin','Stacks'),(30,'Bitcoin','Stellar'),(94,'Bitcoin','Synthetix Network Token'),(8,'Bitcoin','Terra'),(13,'Bitcoin','TerraUSD'),(2,'Bitcoin','Tether'),(45,'Bitcoin','Tezos'),(49,'Bitcoin','The Graph'),(40,'Bitcoin','The Sandbox'),(68,'Bitcoin','Theta Fuel'),(42,'Bitcoin','Theta Network'),(48,'Bitcoin','THORChain'),(26,'Bitcoin','TRON'),(88,'Bitcoin','TrueUSD'),(34,'Bitcoin','Uniswap'),(4,'Bitcoin','USD Coin'),(33,'Bitcoin','VeChain'),(47,'Bitcoin','Waves'),(15,'Bitcoin','Wrapped Bitcoin'),(5,'Bitcoin','XRP'),(55,'Bitcoin','Zcash'),(76,'Bitcoin','Zilliqa'),(315,'Bitcoin Cash','BNB'),(122,'Bitcoin Cash','Ethereum'),(219,'Bitcoin Cash','Tether'),(410,'Bitcoin Cash','USD Coin'),(364,'Bitcoin SV','BNB'),(171,'Bitcoin SV','Ethereum'),(268,'Bitcoin SV','Tether'),(459,'Bitcoin SV','USD Coin'),(389,'BitDAO','BNB'),(196,'BitDAO','Ethereum'),(293,'BitDAO','Tether'),(484,'BitDAO','USD Coin'),(357,'BitTorrent','BNB'),(164,'BitTorrent','Ethereum'),(261,'BitTorrent','Tether'),(452,'BitTorrent','USD Coin'),(297,'BNB','Cardano'),(353,'BNB','cDAI'),(376,'BNB','Celo'),(375,'BNB','Celsius Network'),(335,'BNB','cETH'),(314,'BNB','Chainlink'),(374,'BNB','Chiliz'),(366,'BNB','Convex Finance'),(312,'BNB','Cosmos Hub'),(307,'BNB','Cronos'),(352,'BNB','cUSDC'),(310,'BNB','Dai'),(373,'BNB','Dash'),(330,'BNB','Decentraland'),(302,'BNB','Dogecoin'),(363,'BNB','eCash'),(328,'BNB','Elrond'),(365,'BNB','Enjin Coin'),(341,'BNB','EOS'),(101,'BNB','Ethereum'),(319,'BNB','Ethereum Classic'),(334,'BNB','Fantom'),(329,'BNB','Filecoin'),(347,'BNB','Flow'),(344,'BNB','Frax'),(384,'BNB','Frax Share'),(316,'BNB','FTX Token'),(355,'BNB','Gala'),(356,'BNB','Harmony'),(326,'BNB','Hedera'),(348,'BNB','Helium'),(387,'BNB','Holo'),(382,'BNB','Humans.ai'),(362,'BNB','Huobi BTC'),(377,'BNB','Huobi Token'),(327,'BNB','Internet Computer'),(349,'BNB','IOTA'),(383,'BNB','JUNO'),(386,'BNB','Kadena'),(337,'BNB','Klaytn'),(371,'BNB','KuCoin Token'),(369,'BNB','Kusama'),(322,'BNB','LEO Token'),(309,'BNB','Lido Staked Ether'),(311,'BNB','Litecoin'),(372,'BNB','Loopring'),(343,'BNB','Magic Internet Money'),(358,'BNB','Maker'),(388,'BNB','Mina Protocol'),(332,'BNB','Monero'),(313,'BNB','Near'),(390,'BNB','NEM'),(360,'BNB','NEO'),(380,'BNB','NEXO'),(320,'BNB','OKB'),(342,'BNB','Osmosis'),(350,'BNB','PancakeSwap'),(300,'BNB','Polkadot'),(308,'BNB','Polygon'),(354,'BNB','Quant'),(368,'BNB','Radix'),(305,'BNB','Shiba Inu'),(298,'BNB','Solana'),(370,'BNB','Stacks'),(321,'BNB','Stellar'),(385,'BNB','Synthetix Network Token'),(299,'BNB','Terra'),(304,'BNB','TerraUSD'),(198,'BNB','Tether'),(336,'BNB','Tezos'),(340,'BNB','The Graph'),(331,'BNB','The Sandbox'),(359,'BNB','Theta Fuel'),(333,'BNB','Theta Network'),(339,'BNB','THORChain'),(317,'BNB','TRON'),(379,'BNB','TrueUSD'),(325,'BNB','Uniswap'),(295,'BNB','USD Coin'),(324,'BNB','VeChain'),(338,'BNB','Waves'),(306,'BNB','Wrapped Bitcoin'),(296,'BNB','XRP'),(346,'BNB','Zcash'),(367,'BNB','Zilliqa'),(104,'Cardano','Ethereum'),(201,'Cardano','Tether'),(392,'Cardano','USD Coin'),(160,'cDAI','Ethereum'),(257,'cDAI','Tether'),(448,'cDAI','USD Coin'),(183,'Celo','Ethereum'),(280,'Celo','Tether'),(471,'Celo','USD Coin'),(182,'Celsius Network','Ethereum'),(279,'Celsius Network','Tether'),(470,'Celsius Network','USD Coin'),(142,'cETH','Ethereum'),(239,'cETH','Tether'),(430,'cETH','USD Coin'),(121,'Chainlink','Ethereum'),(218,'Chainlink','Tether'),(409,'Chainlink','USD Coin'),(181,'Chiliz','Ethereum'),(278,'Chiliz','Tether'),(469,'Chiliz','USD Coin'),(173,'Convex Finance','Ethereum'),(270,'Convex Finance','Tether'),(461,'Convex Finance','USD Coin'),(119,'Cosmos Hub','Ethereum'),(216,'Cosmos Hub','Tether'),(407,'Cosmos Hub','USD Coin'),(114,'Cronos','Ethereum'),(211,'Cronos','Tether'),(402,'Cronos','USD Coin'),(159,'cUSDC','Ethereum'),(256,'cUSDC','Tether'),(447,'cUSDC','USD Coin'),(117,'Dai','Ethereum'),(214,'Dai','Tether'),(405,'Dai','USD Coin'),(180,'Dash','Ethereum'),(277,'Dash','Tether'),(468,'Dash','USD Coin'),(137,'Decentraland','Ethereum'),(234,'Decentraland','Tether'),(425,'Decentraland','USD Coin'),(109,'Dogecoin','Ethereum'),(206,'Dogecoin','Tether'),(397,'Dogecoin','USD Coin'),(170,'eCash','Ethereum'),(267,'eCash','Tether'),(458,'eCash','USD Coin'),(135,'Elrond','Ethereum'),(232,'Elrond','Tether'),(423,'Elrond','USD Coin'),(172,'Enjin Coin','Ethereum'),(269,'Enjin Coin','Tether'),(460,'Enjin Coin','USD Coin'),(148,'EOS','Ethereum'),(245,'EOS','Tether'),(436,'EOS','USD Coin'),(126,'Ethereum','Ethereum Classic'),(141,'Ethereum','Fantom'),(136,'Ethereum','Filecoin'),(154,'Ethereum','Flow'),(151,'Ethereum','Frax'),(191,'Ethereum','Frax Share'),(123,'Ethereum','FTX Token'),(162,'Ethereum','Gala'),(163,'Ethereum','Harmony'),(133,'Ethereum','Hedera'),(155,'Ethereum','Helium'),(194,'Ethereum','Holo'),(189,'Ethereum','Humans.ai'),(169,'Ethereum','Huobi BTC'),(184,'Ethereum','Huobi Token'),(134,'Ethereum','Internet Computer'),(156,'Ethereum','IOTA'),(190,'Ethereum','JUNO'),(193,'Ethereum','Kadena'),(144,'Ethereum','Klaytn'),(178,'Ethereum','KuCoin Token'),(176,'Ethereum','Kusama'),(129,'Ethereum','LEO Token'),(116,'Ethereum','Lido Staked Ether'),(118,'Ethereum','Litecoin'),(179,'Ethereum','Loopring'),(150,'Ethereum','Magic Internet Money'),(165,'Ethereum','Maker'),(195,'Ethereum','Mina Protocol'),(139,'Ethereum','Monero'),(120,'Ethereum','Near'),(197,'Ethereum','NEM'),(167,'Ethereum','NEO'),(187,'Ethereum','NEXO'),(127,'Ethereum','OKB'),(149,'Ethereum','Osmosis'),(157,'Ethereum','PancakeSwap'),(107,'Ethereum','Polkadot'),(115,'Ethereum','Polygon'),(161,'Ethereum','Quant'),(175,'Ethereum','Radix'),(112,'Ethereum','Shiba Inu'),(105,'Ethereum','Solana'),(177,'Ethereum','Stacks'),(128,'Ethereum','Stellar'),(192,'Ethereum','Synthetix Network Token'),(106,'Ethereum','Terra'),(111,'Ethereum','TerraUSD'),(100,'Ethereum','Tether'),(143,'Ethereum','Tezos'),(147,'Ethereum','The Graph'),(138,'Ethereum','The Sandbox'),(166,'Ethereum','Theta Fuel'),(140,'Ethereum','Theta Network'),(146,'Ethereum','THORChain'),(124,'Ethereum','TRON'),(186,'Ethereum','TrueUSD'),(132,'Ethereum','Uniswap'),(102,'Ethereum','USD Coin'),(131,'Ethereum','VeChain'),(145,'Ethereum','Waves'),(113,'Ethereum','Wrapped Bitcoin'),(103,'Ethereum','XRP'),(153,'Ethereum','Zcash'),(174,'Ethereum','Zilliqa'),(223,'Ethereum Classic','Tether'),(414,'Ethereum Classic','USD Coin'),(238,'Fantom','Tether'),(429,'Fantom','USD Coin'),(233,'Filecoin','Tether'),(424,'Filecoin','USD Coin'),(251,'Flow','Tether'),(442,'Flow','USD Coin'),(248,'Frax','Tether'),(439,'Frax','USD Coin'),(288,'Frax Share','Tether'),(479,'Frax Share','USD Coin'),(220,'FTX Token','Tether'),(411,'FTX Token','USD Coin'),(259,'Gala','Tether'),(450,'Gala','USD Coin'),(260,'Harmony','Tether'),(451,'Harmony','USD Coin'),(230,'Hedera','Tether'),(421,'Hedera','USD Coin'),(252,'Helium','Tether'),(443,'Helium','USD Coin'),(291,'Holo','Tether'),(482,'Holo','USD Coin'),(286,'Humans.ai','Tether'),(477,'Humans.ai','USD Coin'),(266,'Huobi BTC','Tether'),(457,'Huobi BTC','USD Coin'),(281,'Huobi Token','Tether'),(472,'Huobi Token','USD Coin'),(231,'Internet Computer','Tether'),(422,'Internet Computer','USD Coin'),(253,'IOTA','Tether'),(444,'IOTA','USD Coin'),(287,'JUNO','Tether'),(478,'JUNO','USD Coin'),(290,'Kadena','Tether'),(481,'Kadena','USD Coin'),(241,'Klaytn','Tether'),(432,'Klaytn','USD Coin'),(275,'KuCoin Token','Tether'),(466,'KuCoin Token','USD Coin'),(273,'Kusama','Tether'),(464,'Kusama','USD Coin'),(226,'LEO Token','Tether'),(417,'LEO Token','USD Coin'),(213,'Lido Staked Ether','Tether'),(404,'Lido Staked Ether','USD Coin'),(215,'Litecoin','Tether'),(406,'Litecoin','USD Coin'),(276,'Loopring','Tether'),(467,'Loopring','USD Coin'),(247,'Magic Internet Money','Tether'),(438,'Magic Internet Money','USD Coin'),(262,'Maker','Tether'),(453,'Maker','USD Coin'),(292,'Mina Protocol','Tether'),(483,'Mina Protocol','USD Coin'),(236,'Monero','Tether'),(427,'Monero','USD Coin'),(217,'Near','Tether'),(408,'Near','USD Coin'),(294,'NEM','Tether'),(485,'NEM','USD Coin'),(264,'NEO','Tether'),(455,'NEO','USD Coin'),(284,'NEXO','Tether'),(475,'NEXO','USD Coin'),(224,'OKB','Tether'),(415,'OKB','USD Coin'),(246,'Osmosis','Tether'),(437,'Osmosis','USD Coin'),(254,'PancakeSwap','Tether'),(445,'PancakeSwap','USD Coin'),(204,'Polkadot','Tether'),(395,'Polkadot','USD Coin'),(212,'Polygon','Tether'),(403,'Polygon','USD Coin'),(258,'Quant','Tether'),(449,'Quant','USD Coin'),(272,'Radix','Tether'),(463,'Radix','USD Coin'),(209,'Shiba Inu','Tether'),(400,'Shiba Inu','USD Coin'),(202,'Solana','Tether'),(393,'Solana','USD Coin'),(274,'Stacks','Tether'),(465,'Stacks','USD Coin'),(225,'Stellar','Tether'),(416,'Stellar','USD Coin'),(289,'Synthetix Network Token','Tether'),(480,'Synthetix Network Token','USD Coin'),(203,'Terra','Tether'),(394,'Terra','USD Coin'),(208,'TerraUSD','Tether'),(399,'TerraUSD','USD Coin'),(240,'Tether','Tezos'),(244,'Tether','The Graph'),(235,'Tether','The Sandbox'),(263,'Tether','Theta Fuel'),(237,'Tether','Theta Network'),(243,'Tether','THORChain'),(221,'Tether','TRON'),(283,'Tether','TrueUSD'),(229,'Tether','Uniswap'),(199,'Tether','USD Coin'),(228,'Tether','VeChain'),(242,'Tether','Waves'),(210,'Tether','Wrapped Bitcoin'),(200,'Tether','XRP'),(250,'Tether','Zcash'),(271,'Tether','Zilliqa'),(431,'Tezos','USD Coin'),(435,'The Graph','USD Coin'),(426,'The Sandbox','USD Coin'),(454,'Theta Fuel','USD Coin'),(428,'Theta Network','USD Coin'),(434,'THORChain','USD Coin'),(412,'TRON','USD Coin'),(474,'TrueUSD','USD Coin'),(420,'Uniswap','USD Coin'),(419,'USD Coin','VeChain'),(433,'USD Coin','Waves'),(401,'USD Coin','Wrapped Bitcoin'),(391,'USD Coin','XRP'),(441,'USD Coin','Zcash'),(462,'USD Coin','Zilliqa');
 /*!40000 ALTER TABLE `market` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,7 +52,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `markethistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `markethistory` (
   `MarketHistoryID` int NOT NULL AUTO_INCREMENT,
   `MarketID` int NOT NULL,
@@ -86,7 +61,7 @@ CREATE TABLE `markethistory` (
   KEY `fk_MarketHistory_Market` (`MarketID`),
   CONSTRAINT `fk_MarketHistory_Market` FOREIGN KEY (`MarketID`) REFERENCES `market` (`MarketID`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `MarketVolumePositive` CHECK ((`Volume` > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +79,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `marketorder`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `marketorder` (
   `MarketOrderID` int NOT NULL AUTO_INCREMENT,
   `UserName` varchar(50) NOT NULL,
@@ -122,7 +97,7 @@ CREATE TABLE `marketorder` (
   CONSTRAINT `PricePositive` CHECK ((`Price` > 0)),
   CONSTRAINT `RemainAmountPositive` CHECK ((`RemainAmount` >= 0)),
   CONSTRAINT `TotalAmountConstraint` CHECK ((`TotalAmount` >= `RemainAmount`))
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +106,7 @@ CREATE TABLE `marketorder` (
 
 LOCK TABLES `marketorder` WRITE;
 /*!40000 ALTER TABLE `marketorder` DISABLE KEYS */;
-INSERT INTO `marketorder` VALUES (6,'hien',24,'BUY',2.0000000000,2.0000000000,100.0000000000);
+INSERT INTO `marketorder` VALUES (51,'hien',8,'SELL',5.0000000000,0.0000000000,20.0000000000),(52,'hien',8,'SELL',5.0000000000,0.0000000000,20.0000000000),(53,'hien',8,'SELL',5.0000000000,0.0000000000,20.0000000000),(54,'ming',8,'SELL',10.0000000000,5.0000000000,50.0000000000),(55,'ming',8,'SELL',15.0000000000,15.0000000000,60.0000000000),(56,'duyen',8,'BUY',20.0000000000,0.0000000000,100.0000000000);
 /*!40000 ALTER TABLE `marketorder` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +116,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `orderhistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orderhistory` (
   `OrderHistoryID` int NOT NULL AUTO_INCREMENT,
   `MarketOrderID` int NOT NULL,
@@ -151,7 +126,7 @@ CREATE TABLE `orderhistory` (
   KEY `fk_OrderHistory_MarketOrder` (`MarketOrderID`),
   CONSTRAINT `fk_OrderHistory_MarketOrder` FOREIGN KEY (`MarketOrderID`) REFERENCES `marketorder` (`MarketOrderID`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `AmountOrderHistory` CHECK ((`Amount` > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,6 +135,7 @@ CREATE TABLE `orderhistory` (
 
 LOCK TABLES `orderhistory` WRITE;
 /*!40000 ALTER TABLE `orderhistory` DISABLE KEYS */;
+INSERT INTO `orderhistory` VALUES (164,56,5.0000000000,'2022-04-23 16:03:48'),(165,51,5.0000000000,'2022-04-23 16:03:48'),(166,56,5.0000000000,'2022-04-23 16:03:48'),(167,52,5.0000000000,'2022-04-23 16:03:48'),(168,56,5.0000000000,'2022-04-23 16:03:49'),(169,53,5.0000000000,'2022-04-23 16:03:49'),(170,56,5.0000000000,'2022-04-23 16:03:49'),(171,54,5.0000000000,'2022-04-23 16:03:49');
 /*!40000 ALTER TABLE `orderhistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +145,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `token` (
   `TokenName` varchar(50) NOT NULL,
   `TokenSymbol` varchar(10) NOT NULL,
@@ -181,7 +157,7 @@ CREATE TABLE `token` (
   PRIMARY KEY (`TokenName`),
   UNIQUE KEY `TokenName` (`TokenName`),
   UNIQUE KEY `TokenSymbol` (`TokenSymbol`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +176,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tokenhistory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tokenhistory` (
   `TokenHistoryID` int NOT NULL AUTO_INCREMENT,
   `TokenName` varchar(50) NOT NULL,
@@ -209,7 +185,7 @@ CREATE TABLE `tokenhistory` (
   KEY `fk_TokenHistory_Token` (`TokenName`),
   CONSTRAINT `fk_TokenHistory_Token` FOREIGN KEY (`TokenName`) REFERENCES `token` (`TokenName`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `TokenVolumePositive` CHECK ((`Volume` > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,12 +198,38 @@ LOCK TABLES `tokenhistory` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `UserName` varchar(50) NOT NULL,
+  `PassWord` varchar(100) NOT NULL,
+  `UserBio` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`UserName`),
+  UNIQUE KEY `UserName` (`UserName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('dung','string',''),('duyen','string',''),('hien','string',''),('huy','string',''),('ming','string','abcd');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `userbalance`
 --
 
 DROP TABLE IF EXISTS `userbalance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `userbalance` (
   `UserName` varchar(50) NOT NULL,
   `TokenName` varchar(50) NOT NULL,
@@ -237,7 +239,7 @@ CREATE TABLE `userbalance` (
   CONSTRAINT `fk_UserBalance_Token` FOREIGN KEY (`TokenName`) REFERENCES `token` (`TokenName`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_UserBalance_User` FOREIGN KEY (`UserName`) REFERENCES `user` (`UserName`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `UserBalanceAmountPositive` CHECK ((`Amount` >= 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +248,7 @@ CREATE TABLE `userbalance` (
 
 LOCK TABLES `userbalance` WRITE;
 /*!40000 ALTER TABLE `userbalance` DISABLE KEYS */;
-INSERT INTO `userbalance` VALUES ('dung','Bitcoin',13.0800000000),('hien','Bitcoin',13.0800000000),('huy','Bitcoin',13.0800000000);
+INSERT INTO `userbalance` VALUES ('dung','Bitcoin',500.0000000000),('duyen','Bitcoin',20.0000000000),('duyen','Terra',495.0000000000),('hien','Bitcoin',480.0000000000),('hien','Terra',300.0000000000),('huy','Terra',500.0000000000),('ming','Bitcoin',495.0000000000),('ming','Terra',250.0000000000);
 /*!40000 ALTER TABLE `userbalance` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -259,4 +261,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-22 22:55:11
+-- Dump completed on 2022-04-24  0:44:13
+
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=1;

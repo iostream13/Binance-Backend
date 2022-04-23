@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-sqlalchemy_database_url = "mysql+mysqlconnector://root:hien1308@localhost:3306/Binance"
+sqlalchemy_database_url = "mysql+mysqlconnector://root:hien1308@localhost:3306/binance"
 
 engine = create_engine(
     sqlalchemy_database_url,
