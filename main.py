@@ -97,12 +97,48 @@ def update(username: str, bio: str, db: Session = Depends(get_db)):
     db.commit()
     
 @app.post("/test/")
-def test(orderid: int, db: Session = Depends(get_db)):
+def test(token1: str, token2: str, db: Session = Depends(get_db)):
     #return crud.delete_order(db, orderid)
-    db_order = crud.get_order(db, orderid)
-    if db_order is None:
-        raise HTTPException(status_code=400, detail="Bad request. Not found order")
-        return
-    db.delete(db_order)
-    db.commit()
+    return crud.test(db, token1, token2)
     
+@app.get("/market/buy/")
+def get_order_buy(token1: str, token2: str, db: Session = Depends(get_db)):
+    t1 = crud.find_token(db, token1)
+    t2 = crud.find_token(db, token2)
+    if t1 is None or t2 is None:
+        ok = 0
+        raise HTTPException(status_code=400, detail="Bad request. Token not found!")
+    token1 = token1.lower()
+    token2 = token2.lower()
+    if crud.check_market(db, token1, token2) == "NO":
+        ok = 0
+        raise HTTPException(status_code=400, detail="Bad request. Market not found")
+    market: models.Market = crud.find_market(db, token1.lower(), token2.lower())
+    if market is None:
+        raise HTTPException(status_code=400, detail="Bad request. Market not found")
+    return crud.get_order_buy(db, market)
+
+@app.get("/market/sell/")
+def get_order_sell(token1: str, token2: str, db: Session = Depends(get_db)):
+    t1 = crud.find_token(db, token1)
+    t2 = crud.find_token(db, token2)
+    if t1 is None or t2 is None:
+        ok = 0
+        raise HTTPException(status_code=400, detail="Bad request. Token not found!")
+    token1 = token1.lower()
+    token2 = token2.lower()
+    if crud.check_market(db, token1, token2) == "NO":
+        ok = 0
+        raise HTTPException(status_code=400, detail="Bad request. Market not found")
+    market: models.Market = crud.find_market(db, token1.lower(), token2.lower())
+    if market is None:
+        raise HTTPException(status_code=400, detail="Bad request. Market not found")
+    return crud.get_order_sell(db, market)
+
+@app.get("/markets/")
+def get_markets(db: Session = Depends(get_db)):
+    return crud.get_markets(db)
+
+@app.get("/tokens/")
+def get_tokens(db: Session = Depends(get_db)):
+    return crud.get_tokens(db)
