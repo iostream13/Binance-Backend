@@ -91,6 +91,7 @@ class OrderHistory(Base):
     
     orderhistoryid = Column(Integer, primary_key = True, index = True)
     marketorderid = Column(Integer, ForeignKey("marketorder.marketorderid"))
+    marketid = Column(Integer)
     amount = Column(Float)
     orderedat = Column(DateTime)
     

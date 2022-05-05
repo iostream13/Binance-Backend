@@ -77,6 +77,7 @@ class MarketOrder(BaseModel):
 class OrderHistory(BaseModel):
     orderhistoryid: int
     marketorderid: int
+    marketid: int
     amount: float
     orderedat: datetime
     

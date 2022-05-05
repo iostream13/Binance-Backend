@@ -144,10 +144,10 @@ def increase_user_token_balance(db: Session, username: str, token: str, delta: f
         db.commit()
     return "OK"
 
-def create_order_history(db: Session, marketorderid: int, amount: float):
+def create_order_history(db: Session, marketid: int, marketorderid: int, amount: float):
     print("hjhjhj")
     now = datetime.utcnow()
-    db_order = models.OrderHistory(marketorderid=marketorderid,
+    db_order = models.OrderHistory(marketorderid=marketorderid, marketid=marketid,
                                    amount=amount, orderedat=now)
     db.add(db_order)
     db.commit()
@@ -179,8 +179,8 @@ def deal(db: Session, order_buy: models.MarketOrder, order_sell: models.MarketOr
     increase_user_token_balance(
         db, order_sell.username, token2, amount_deal * order_sell.price)
     
-    create_order_history(db, order_buy.marketorderid, amount_deal)
-    create_order_history(db, order_sell.marketorderid, amount_deal)
+    create_order_history(db, market.marketid, order_buy.marketorderid, amount_deal)
+    create_order_history(db, market.marketid, order_sell.marketorderid, amount_deal)
     
     db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == order_buy.marketorderid).update({"remainamount": order_buy.remainamount - amount_deal})
     db.commit()
@@ -206,8 +206,11 @@ def get_order_sell(db: Session, market: models.Market):
     return db.query(models.MarketOrder).filter(and_(models.MarketOrder.marketid == market.marketid, models.MarketOrder.orderaction == Action.SELL, models.MarketOrder.remainamount > 0)).all()
     
 def get_order_history(db: Session, market: models.Market):
-    return market.listmarkethistory()
-
+    return db.query(models.OrderHistory).filter(models.OrderHistory.marketid == market.marketid).order_by(desc(models.OrderHistory.orderhistoryid)).all()
+    
+def check_order(db: Session, market_order_id: int):
+    return db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == market_order_id).first()
+    
 def test(db: Session, token1: str, token2: str):
     market: models.Market = find_market(db, token1, token2)
     s = db.query(models.MarketOrder).filter(models.MarketOrder.marketid ==
