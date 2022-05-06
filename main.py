@@ -34,6 +34,21 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="username already registered")
     return crud.create_user(db, user)
 
+@app.post("/user/addbalance/{user}")
+def create_balance(user: str, token: str, amount: float, db: Session = Depends(get_db)):
+    user_db = crud.get_user_by_name(db, user)
+    if user_db is None:
+        raise HTTPException(status_code=404, detail="user not found")
+        return None
+    token_db = crud.find_token(db, token)
+    if token_db is None:
+        raise HTTPException(status_code=404, detail="token not found")
+        return None
+    if amount < 0: 
+        raise HTTPException(status_code=400, detail="Bad request! Amount must be positive!")
+        return None
+    return crud.create_balance(db, user, token, amount)
+
 @app.get("/users/", response_model=List[schemas.UserInfor])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip, limit)
@@ -49,6 +64,13 @@ def read_user(user_name: str, db: Session = Depends(get_db)):
     # res.append(user)
     # res.append(balance)
     return balance
+
+@app.get("/user/password/{user_name}")
+def read_password_user(user_name: str, db: Session = Depends(get_db)):
+    user: models.User = crud.get_user_by_name(db, user_name)
+    if user is None:
+        raise HTTPException(status_code=404, detail="user not found")
+    return user.password
 
 class order_model(BaseModel):
     username: str = ""

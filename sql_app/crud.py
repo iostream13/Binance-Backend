@@ -50,13 +50,15 @@ def get_markets(db: Session):
 
 
 def create_balance(db: Session, username: str, tokenname: str, amount: float):
-    db_userbalance = models.UserBalance(
-        username=username, tokenname=tokenname, amount=amount)
-    db.add(db_userbalance)
-    db.commit()
-    db.refresh(db_userbalance)
-    return db_userbalance
-
+    db_balance = db.query(models.UserBalance).filter(and_(models.UserBalance.username == username, models.UserBalance.tokenname == tokenname)).first()
+    if db_balance is None:
+        db_userbalance = models.UserBalance(
+            username=username, tokenname=tokenname, amount=amount)
+        db.add(db_userbalance)
+        db.commit()
+        db.refresh(db_userbalance)
+        return db_userbalance
+    return db_balance
 
 def create_user(db: Session, user: schemas.UserCreate):
     bio = ""
