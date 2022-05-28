@@ -1,9 +1,40 @@
 [
     {
-        "time": 1653732000,
-        "open": 100.0,
-        "close": 40.0,
-        "high": 60.0,
-        "low": 40.0
+        "market": "Bitcoin-Terra",
+        "data": [
+            {
+                "time": 1653732000,
+                "open": 100.0,
+                "close": 40.0,
+                "high": 60.0,
+                "low": 40.0
+            },
+            {
+                "time": 1653739200,
+                "open": 100.0,
+                "close": 40.0,
+                "high": 60.0,
+                "low": 40.0
+            },
+            {
+                "time": 1653742800,
+                "open": 40.0,
+                "close": 40.0,
+                "high": 40.0,
+                "low": 40.0
+            }
+        ]
+    },
+    {
+        "market": "Ethereum-Terra",
+        "data": [
+            {
+                "time": 1653742800,
+                "open": 200.0,
+                "close": 2.0,
+                "high": 200.0,
+                "low": 2.0
+            }
+        ]
     }
 ]

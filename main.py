@@ -262,3 +262,7 @@ def get_last_price(token1: str, token2: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Bad request. Market not found!")
     market: models.Market = crud.find_market(db, token1.lower(), token2.lower())
     return crud.get_last_price(db, market)
+
+@app.get("/market_full")
+def get_full_data_market(db: Session = Depends(get_db)):
+    return crud.get_full_data_market(db)
