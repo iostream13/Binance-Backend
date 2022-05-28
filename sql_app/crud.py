@@ -1,8 +1,11 @@
 import imp
 from statistics import mode
-from sqlalchemy import and_, asc, or_, not_, desc, asc
+from sqlalchemy import Interval, and_, asc, or_, not_, desc, asc, func
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timedelta
+import sys
+import math
+import json
 
 
 from . import models, schemas
@@ -199,6 +202,8 @@ def relax_market(db: Session, token1: str, token2: str):
             models.MarketOrder.marketid == market.marketid, models.MarketOrder.orderaction == Action.BUY, models.MarketOrder.remainamount > 0)).order_by(desc(models.MarketOrder.price)).first()
         if sell is None or buy is None or sell.price > buy.price:
             break
+        if sell.username == buy.username:
+            continue
         deal(db, buy, sell)
 
 def get_order_buy(db: Session, market: models.Market):
@@ -207,16 +212,98 @@ def get_order_buy(db: Session, market: models.Market):
 def get_order_sell(db: Session, market: models.Market):
     return db.query(models.MarketOrder).filter(and_(models.MarketOrder.marketid == market.marketid, models.MarketOrder.orderaction == Action.SELL, models.MarketOrder.remainamount > 0)).all()
     
+#check
 def get_order_history(db: Session, market: models.Market):
+    #return market.listmarkethistory
     return db.query(models.OrderHistory).filter(models.OrderHistory.marketid == market.marketid).order_by(desc(models.OrderHistory.orderhistoryid)).all()
-    
+
+#get my order
+def get_my_order(db: Session, market: models.Market, username: str):
+    historydata: models.OrderHistory = db.query(models.OrderHistory).filter(models.OrderHistory.marketid == market.marketid).order_by(desc(models.OrderHistory.orderhistoryid)).all()
+    myorder = []
+    for history in historydata:
+        orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == history.orderhistoryid).first()
+        if orderdata is None: 
+            continue
+        if orderdata.username == username:
+            myorder.append(orderdata)
+    return myorder
+
+#get last price
+def get_last_price(db: Session, market: models.Market):
+    historydata: models.OrderHistory = db.query(models.OrderHistory).filter(models.OrderHistory.marketid == market.marketid).order_by(desc(models.OrderHistory.orderhistoryid)).first()
+    orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == historydata.marketorderid).first()
+    if orderdata.orderaction == Action.BUY:
+        return {"BUY", orderdata.price}
+    return {"SELL", orderdata.price}
+ 
+#24h volume
+def get_24h_volume(db: Session, market: models.Market):
+    timee = datetime.utcnow() - timedelta(hours=24)
+    historydata: models.OrderHistory = db.query(models.OrderHistory).filter(and_(models.OrderHistory.marketid == market.marketid, models.OrderHistory.orderedat >= timee)).order_by(desc(models.OrderHistory.orderhistoryid)).first()
+    sum = 0
+    for order in historydata:
+        sum = sum + order.amount
+    return sum
+
+#24h low
+def get_24h_low(db: Session, market: models.Market):
+    timee = datetime.utcnow() - timedelta(hours=24)
+    historydata: models.OrderHistory = db.query(models.OrderHistory).filter(and_(models.OrderHistory.marketid == market.marketid, models.OrderHistory.orderedat >= timee)).all()
+    low = sys.float_info.max
+    for order in historydata:
+        orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == order.marketorderid).first()
+        if orderdata.orderaction == Action.SELL:
+            low = min(low, orderdata.price)
+    return low
+
+#24h high
+def get_24h_high(db: Session, market: models.Market):
+    timee = datetime.utcnow() - timedelta(hours=24)
+    historydata: models.OrderHistory = db.query(models.OrderHistory).filter(and_(models.OrderHistory.marketid == market.marketid, models.OrderHistory.orderedat >= timee)).all()
+    high = 0
+    for order in historydata:
+        orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == order.marketorderid).first()
+        if orderdata.orderaction == Action.SELL:
+            high = max(high, orderdata.price)
+    return high
+
 def check_order(db: Session, market_order_id: int):
     return db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == market_order_id).first()
     
-def test(db: Session, token1: str, token2: str):
-    market: models.Market = find_market(db, token1, token2)
-    s = db.query(models.MarketOrder).filter(models.MarketOrder.marketid ==
-                                            market.marketid).order_by(asc(models.MarketOrder.price)).first()
-    b = db.query(models.MarketOrder).filter(models.MarketOrder.marketid ==
-                                            market.marketid).order_by(desc(models.MarketOrder.price)).first()
-    return {s, b}
+def chart(db: Session, market: models.Market):
+    tsnow = datetime.timestamp(datetime.utcnow())
+    timee = math.floor(tsnow / 3600)
+    timee = timee * 3600
+    historydata = db.query(models.OrderHistory).filter(and_(models.OrderHistory.marketid == market.marketid, models.OrderHistory.orderedat >= timee)).order_by(desc(models.OrderHistory.orderhistoryid)).all()
+    open = db.query(models.OrderHistory).filter(and_(models.OrderHistory.marketid == market.marketid, models.OrderHistory.orderedat >= timee)).order_by(asc(models.OrderHistory.orderhistoryid)).first()
+    close = db.query(models.OrderHistory).filter(and_(models.OrderHistory.marketid == market.marketid, models.OrderHistory.orderedat >= timee)).order_by(desc(models.OrderHistory.orderhistoryid)).first()
+    low = sys.float_info.max
+    high = 0
+    for order in historydata:
+        orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == order.marketorderid).first()
+        if orderdata.orderaction == Action.SELL:
+            low = min(low, orderdata.price)
+            high = max(high, orderdata.price)
+    a_file = open("datachart.json", "r")
+    json_object = json.load(a_file)
+    a_file.close()
+    last_element = json_object[-1]
+    if last_element['time'] == timee:
+        last_element['open'] = open 
+        last_element['close'] = close
+        last_element['low'] = low 
+        last_element['high'] = high
+        json_object[-1] = last_element 
+    else:
+        json_object.append({
+            "time": timee,
+            "open": open,
+            "close": close,
+            "high": high,
+            "low": low})
+    a_file = open("datachart.json", "w")
+    json.dump(json_object, a_file, indent=4)
+    a_file.close()
+        
+    
