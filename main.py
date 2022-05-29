@@ -54,7 +54,7 @@ def create_balance(user: str, token: str, amount: float, db: Session = Depends(g
     return crud.create_balance(db, user, token, amount)
 
 @app.post("/user/addbalance/{user}")
-def create_balance(user: str, token: str, amount: float, db: Session = Depends(get_db)):
+def add_balance(user: str, token: str, amount: float, db: Session = Depends(get_db)):
     user_db = crud.get_user_by_name(db, user)
     if user_db is None:
         raise HTTPException(status_code=404, detail="user not found")
@@ -283,11 +283,11 @@ def get_full_data_market(db: Session = Depends(get_db)):
     return crud.get_full_data_market(db)
 
 @app.get("/getcharts/")
-def get_data_chart(db: Session = Depends(get_db)):
-    return crud.get_datachart(db)
+def get_data_charts(db: Session = Depends(get_db)):
+    return crud.get_datacharts(db)
 
 @app.get("/market/chart")
-def get_last_price(token1: str, token2: str, db: Session = Depends(get_db)):
+def get_chart_of_market(token1: str, token2: str, db: Session = Depends(get_db)):
     t1 = crud.find_token(db, token1)
     t2 = crud.find_token(db, token2)
     if t1 is None or t2 is None:

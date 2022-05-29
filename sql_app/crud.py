@@ -477,14 +477,6 @@ def get_datacharts(db: Session):
     a_file.close()
     return json_object
 
-def get_datacharts(db: Session, market: models.Market):
-    script_location = Path(__file__).absolute().parent
-    file_location = script_location / 'datachart.json'
-    a_file = open(file_location, 'r')
-    json_object = json.load(a_file)
-    a_file.close()
-    return json_object
-
 def get_datachart_of_market(db: Session, market: models.Market):
     script_location = Path(__file__).absolute().parent
     file_location = script_location / 'datachart.json'
