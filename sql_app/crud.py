@@ -455,12 +455,32 @@ def get_full_data_market(db: Session):
         full_data.append({"token1": market.token1, "token2": market.token2, "high": high, "low": low, "volume": volume, "lastprice": close, "state": state})
     return full_data
         
-def get_datachart(db: Session):
+def get_datacharts(db: Session):
     script_location = Path(__file__).absolute().parent
     file_location = script_location / 'datachart.json'
     a_file = open(file_location, 'r')
     json_object = json.load(a_file)
     a_file.close()
     return json_object
+
+def get_datacharts(db: Session, market: models.Market):
+    script_location = Path(__file__).absolute().parent
+    file_location = script_location / 'datachart.json'
+    a_file = open(file_location, 'r')
+    json_object = json.load(a_file)
+    a_file.close()
+    return json_object
+
+def get_datachart_of_market(db: Session, market: models.Market):
+    script_location = Path(__file__).absolute().parent
+    file_location = script_location / 'datachart.json'
+    a_file = open(file_location, 'r')
+    json_object = json.load(a_file)
+    a_file.close()
+    for mk in json_object:
+        market_name = market.token1 + "-" + market.token2
+        if mk['market'] == market_name:
+            return mk
+    return None
         
         
