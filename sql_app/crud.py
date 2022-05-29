@@ -433,7 +433,7 @@ def get_full_data_market(db: Session):
         state = "INC"
         if close < Open:
             state = "DEC"
-        full_data.append({"token1": token1, "token2": token2, "high": get_24h_high(db, market), "low": get_24h_low(db, market) , "volume": get_24h_volume(db, market), "last price": close, "state": state})
+        full_data.append({"token1": token1, "token2": token2, "high": get_24h_high(db, market), "low": get_24h_low(db, market) , "volume": get_24h_volume(db, market), "lastprice": close, "state": state})
     
         
     data_market = db.query(models.Market).all()
@@ -452,10 +452,15 @@ def get_full_data_market(db: Session):
         low = random.randint(20, 60) + random.random()
         
         volume = random.randint(1000000, 1000000000) + random.random()
-        full_data.append({"token1": market.token1, "token2": market.token2, "high": high, "low": low, "volume": volume, "last price": close, "state": state})
+        full_data.append({"token1": market.token1, "token2": market.token2, "high": high, "low": low, "volume": volume, "lastprice": close, "state": state})
     return full_data
         
-        
-        
+def get_datachart(db: Session):
+    script_location = Path(__file__).absolute().parent
+    file_location = script_location / 'datachart.json'
+    a_file = open(file_location, 'r')
+    json_object = json.load(a_file)
+    a_file.close()
+    return json_object
         
         
