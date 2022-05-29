@@ -38,7 +38,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="username already registered")
     return crud.create_user(db, user)
 
-@app.post("/user/addbalance/{user}")
+@app.post("/user/createbalance/{user}")
 def create_balance(user: str, token: str, amount: float, db: Session = Depends(get_db)):
     user_db = crud.get_user_by_name(db, user)
     if user_db is None:
@@ -52,6 +52,21 @@ def create_balance(user: str, token: str, amount: float, db: Session = Depends(g
         raise HTTPException(status_code=400, detail="Bad request! Amount must be positive!")
         return None
     return crud.create_balance(db, user, token, amount)
+
+@app.post("/user/addbalance/{user}")
+def create_balance(user: str, token: str, amount: float, db: Session = Depends(get_db)):
+    user_db = crud.get_user_by_name(db, user)
+    if user_db is None:
+        raise HTTPException(status_code=404, detail="user not found")
+        return None
+    token_db = crud.find_token(db, token)
+    if token_db is None:
+        raise HTTPException(status_code=404, detail="token not found")
+        return None
+    if amount < 0: 
+        raise HTTPException(status_code=400, detail="Bad request! Amount must be positive!")
+        return None
+    return crud.add_balance(db, user, token, amount)
 
 @app.get("/users/", response_model=List[schemas.UserInfor])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
