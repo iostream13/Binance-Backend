@@ -325,6 +325,8 @@ def chart(db: Session, market: models.Market):
         return "history data is null"
     history_open: models.OrderHistory = db.query(models.OrderHistory).filter(and_(
         models.OrderHistory.marketid == market.marketid, models.OrderHistory.orderedat >= time_open)).order_by(asc(models.OrderHistory.orderedat)).all()
+    if history_open is None:
+        return "history data is null"
     data_open: models.MarketOrder = None
     for order in history_open:
         orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(
@@ -332,9 +334,13 @@ def chart(db: Session, market: models.Market):
         if orderdata.orderaction == Action.SELL:
             data_open = orderdata
             break
+    if data_open is None:
+        return "history data is null"
     Open = data_open.price
     history_close: models.OrderHistory = db.query(models.OrderHistory).filter(and_(models.OrderHistory.marketid == market.marketid,
                                                                                    models.OrderHistory.orderedat >= time_open)).order_by(desc(models.OrderHistory.orderedat)).all()
+    if history_close is None:
+        return "history data is null"
     data_close: models.MarketOrder = None
     for order in history_close:
         orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(
@@ -342,6 +348,8 @@ def chart(db: Session, market: models.Market):
         if orderdata.orderaction == Action.SELL:
             data_close = orderdata
             break
+    if data_close is None:
+        return "history data is null"
     close = data_close.price
     low = sys.float_info.max
     high = 0
