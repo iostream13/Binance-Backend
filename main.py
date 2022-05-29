@@ -6,7 +6,6 @@ from typing import List
 
 from fastapi import Depends, FastAPI, Query, Body, status, Form, File, UploadFile, HTTPException, Request
 from typing import List, Optional, Set
-from isort import file
 from pydantic import BaseModel, Field
 from fastapi.responses import JSONResponse, PlainTextResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
