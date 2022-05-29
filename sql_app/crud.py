@@ -1,4 +1,5 @@
 import imp
+from lib2to3.pgen2.token import OP
 from statistics import mode
 from time import time
 from sqlalchemy import Interval, and_, asc, false, or_, not_, desc, asc, func, true
@@ -311,7 +312,8 @@ def get_24h_high(db: Session, market: models.Market):
 
 def check_order(db: Session, market_order_id: int):
     return db.query(models.MarketOrder).filter(models.MarketOrder.marketorderid == market_order_id).first()
-    
+
+
 def chart(db: Session, market: models.Market):
     tsnow = datetime.timestamp(datetime.utcnow())
     timee = math.floor(tsnow / 3600)
@@ -401,12 +403,29 @@ def get_full_data_market(db: Session):
     full_data = []
     market_used = []
     for mk in json_object:
-        market_used.append(mk['market'])
         tk = mk['market'].split("-")
         token1 = tk[0]
         token2 = tk[1]
         market: models.Market = find_market(db, token1, token2)
-        full_data.append({"token1": token1, "token2": token2, "data": mk['data'][-1], "volume": get_24h_volume(db, market)})
+        data = mk['data']
+        timee = datetime.timestamp(datetime.utcnow()) - 86400
+        print(timee)
+        Open = 0.0
+        close = 0.0
+        data_24h = []
+        for d in data[::-1]:     
+               if d['time'] < timee:
+                   break
+               data_24h.append(d)
+        if len(data_24h) == 0:
+            continue
+        market_used.append(mk['market'])
+        close = data_24h[0]['close']
+        Open = data_24h[-1]['open']
+        state = "INC"
+        if close < Open:
+            state = "DEC"
+        full_data.append({"token1": token1, "token2": token2, "high": get_24h_high(db, market), "low": get_24h_low(db, market) , "volume": get_24h_volume(db, market), "last price": close, "state": state})
     
         
     data_market = db.query(models.Market).all()
@@ -416,22 +435,16 @@ def get_full_data_market(db: Session):
         market_name = market.token1 + "-" + market.token2
         if market_name in market_used:
             continue
-        Open = random.randint(50, 200) + random.random()
-        close = random.randint(50, 200) + random.random()
-        high = random.randint(170, 250) + random.random()
-        low = random.randint(20, 100) + random.random()
+        close = random.randint(70, 160) + random.random()
+        Open = random.randint(70, 160) + random.random()
+        state = "INC"
+        if close < Open:
+            state = "DEC"
+        high = random.randint(170, 200) + random.random()
+        low = random.randint(20, 60) + random.random()
+        
         volume = random.randint(1000000, 1000000000) + random.random()
-        tsnow = datetime.timestamp(datetime.utcnow())
-        timee = math.floor(tsnow / 3600)
-        timee = timee * 3600
-        data = []
-        data.append({
-            "time": timee,
-            "open": Open,
-            "close": close,
-            "high": high,
-            "low": low})
-        full_data.append({"token1": market.token1, "token2": market.token2, "data": data, "volume": volume})
+        full_data.append({"token1": market.token1, "token2": market.token2, "high": high, "low": low, "volume": volume, "last price": close, "state": state})
     return full_data
         
         
