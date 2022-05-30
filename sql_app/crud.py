@@ -219,22 +219,6 @@ def deal(db: Session, order_buy: models.MarketOrder, order_sell: models.MarketOr
     db.commit()
 
 
-def relax_market(db: Session, token1: str, token2: str):
-    market: models.Market = find_market(db, token1, token2)
-    while 1 > 0:
-        sell: models.MarketOrder = db.query(models.MarketOrder).filter(and_(
-            models.MarketOrder.marketid == market.marketid, models.MarketOrder.orderaction == Action.SELL, models.MarketOrder.remainamount > 0)).order_by(asc(models.MarketOrder.price)).first()
-        if sell is None:
-            break
-        buy: models.MarketOrder = db.query(models.MarketOrder).filter(and_(
-            models.MarketOrder.marketid == market.marketid, models.MarketOrder.orderaction == Action.BUY, models.MarketOrder.remainamount > 0, models.MarketOrder.username != sell.username)).order_by(desc(models.MarketOrder.price)).first()
-        if buy is None or sell.price > buy.price or sell.marketorderid == buy.marketorderid:
-            break
-        if sell.username == buy.username:
-            continue
-        deal(db, buy, sell)
-
-
 def get_order_buy(db: Session, market: models.Market):
     return db.query(models.MarketOrder).filter(and_(models.MarketOrder.marketid == market.marketid, models.MarketOrder.orderaction == Action.BUY, models.MarketOrder.remainamount > 0)).all()
 
@@ -489,4 +473,19 @@ def get_datachart_of_market(db: Session, market: models.Market):
             return mk
     return None
         
-        
+
+def relax_market(db: Session, token1: str, token2: str):
+    market: models.Market = find_market(db, token1, token2)
+    while 1 > 0:
+        sell: models.MarketOrder = db.query(models.MarketOrder).filter(and_(
+            models.MarketOrder.marketid == market.marketid, models.MarketOrder.orderaction == Action.SELL, models.MarketOrder.remainamount > 0)).order_by(asc(models.MarketOrder.price)).first()
+        if sell is None:
+            break
+        buy: models.MarketOrder = db.query(models.MarketOrder).filter(and_(
+            models.MarketOrder.marketid == market.marketid, models.MarketOrder.orderaction == Action.BUY, models.MarketOrder.remainamount > 0, models.MarketOrder.username != sell.username)).order_by(desc(models.MarketOrder.price)).first()
+        if buy is None or sell.price > buy.price or sell.marketorderid == buy.marketorderid:
+            break
+        if sell.username == buy.username:
+            continue
+        deal(db, buy, sell)
+    chart(db, market)
