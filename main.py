@@ -278,6 +278,22 @@ def get_last_price(token1: str, token2: str, db: Session = Depends(get_db)):
     market: models.Market = crud.find_market(db, token1.lower(), token2.lower())
     return crud.get_last_price(db, market)
 
+@app.get("/market/statelastprice")
+def get_state_last_price(token1: str, token2: str, db: Session = Depends(get_db)):
+    t1 = crud.find_token(db, token1)
+    t2 = crud.find_token(db, token2)
+    if t1 is None or t2 is None:
+        ok = 0
+        raise HTTPException(status_code=400, detail="Bad request. Token not found!")
+    token1 = token1.lower()
+    token2 = token2.lower()
+    if crud.check_market(db, token1, token2) == "NO":
+        ok = 0
+        raise HTTPException(status_code=400, detail="Bad request. Market not found!")
+    market: models.Market = crud.find_market(db, token1.lower(), token2.lower())
+    return crud.get_state_last_price(db, market)
+
+
 @app.get("/market_full")
 def get_full_data_market(db: Session = Depends(get_db)):
     return crud.get_full_data_market(db)

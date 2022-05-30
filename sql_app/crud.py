@@ -261,7 +261,6 @@ def get_last_price(db: Session, market: models.Market):
     return orderdata.price
 
 
-
 def get_24h_volume(db: Session, market: models.Market):
     timee = datetime.utcnow() - timedelta(hours=24)
     historydata: models.OrderHistory = db.query(models.OrderHistory).filter(and_(
@@ -473,6 +472,12 @@ def get_datachart_of_market(db: Session, market: models.Market):
             return mk
     return None
         
+def get_state_last_price(db: Session, market: models.Market):
+    datachart = get_datachart_of_market(db,market)
+    data = datachart['data'][-1]
+    if data['close'] >= data['open']:
+        return "INC"
+    return "DEC"
 
 def relax_market(db: Session, token1: str, token2: str):
     market: models.Market = find_market(db, token1, token2)
