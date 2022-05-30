@@ -253,12 +253,12 @@ def get_last_price(db: Session, market: models.Market):
     historydata: models.OrderHistory = db.query(models.OrderHistory).filter(
         models.OrderHistory.marketid == market.marketid).order_by(desc(models.OrderHistory.orderhistoryid)).first()
     if historydata is None:
-        return "history data is null"
-    orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(
-        models.MarketOrder.marketorderid == historydata.marketorderid).first()
-    if orderdata.orderaction == Action.BUY:
-        return {"BUY", orderdata.price}
-    return {"SELL", orderdata.price}
+        return 0
+    orderdata: models.MarketOrder = db.query(models.MarketOrder).filter(and_(
+        models.MarketOrder.marketorderid == historydata.marketorderid, models.MarketOrder.orderaction == Action.SELL)).first()
+    if orderdata is None:
+        return 0
+    return orderdata.price
 
 
 
