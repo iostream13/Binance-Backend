@@ -5,6 +5,7 @@ from telnetlib import STATUS
 from typing import List
 
 from fastapi import Depends, FastAPI, Query, Body, status, Form, File, UploadFile, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional, Set
 from pydantic import BaseModel, Field
 from fastapi.responses import JSONResponse, PlainTextResponse
@@ -18,6 +19,14 @@ from sql_app.models import Action
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependency
 def get_db():
